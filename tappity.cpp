@@ -1,4 +1,5 @@
 #include "tappity.h"
+#include <iostream>
 /**
  * Class for tappity
 **/
@@ -6,12 +7,14 @@
 //Constructor sets the reference phrase
 tappity::tappity(std::string reference)
 {
+  phrase = reference;
 }
 
-//Provide the input to be compared to the reference. Before this 
+//Provide the input to be compared to the reference. Before this
 //function is called, the input should be considered an empty string
 void tappity::entry(std::string input)
 {
+  this->input = input;
 }
 
 //Compares the length of the reference to that of the input and
@@ -19,16 +22,16 @@ void tappity::entry(std::string input)
 //same length
 int tappity::length_difference()
 {
-  return 0;
+  return abs(input.length()-phrase.length());
 }
 
 //Compares the content of the reference to that of the input and
 //calculates the accuracy of matching characters. If the two strings
-//are identical, accuracy should be 100. However, for each 
+//are identical, accuracy should be 100. However, for each
 //corresponding character that does not match in the same location,
 //the percentage of corresponding characters should be returned.
 //For example, if the reference and input have 10 letters and the input
-//matches 8 of the corresponding reference characters, the function 
+//matches 8 of the corresponding reference characters, the function
 //should return 80. When input does not have the same number of
 //characters as the reference, the accuracy should represent the percent
 //of matching characters between the shorter and longer strings. For
@@ -36,5 +39,29 @@ int tappity::length_difference()
 //locations in another string that has 16 characters, the accuracy is 50.
 double tappity::accuracy()
 {
-  return 0;
+  int checklength;
+  int correct_characters = 0;
+  int denom;
+  if(input.length() >= phrase.length())
+  {
+    checklength = phrase.length();
+    denom = input.length();
+  }
+  else
+  {
+    checklength = phrase.length() - length_difference();
+    denom = phrase.length();
+  }
+  for(int i = 0; i < checklength; i++)
+  {
+    if(phrase[i] == input[i])
+    {
+      correct_characters++;
+    }
+  }
+  if(denom == 0)
+  {
+    return 0;
+  }
+  return ((double)correct_characters/(double)denom)*100;
 }
